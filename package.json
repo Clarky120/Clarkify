@@ -1,0 +1,28 @@
+{
+  "name": "clarkify",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@laihoe/demoparser2": "^0.38.0",
+    "bz2": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "globaloffensive": "^3.2.0",
+    "steam-user": "^5.2.0",
+    "ts-node": "^10.9.2",
+    "yauzl": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/globaloffensive": "^2.3.4",
+    "@types/node": "^22.13.10",
+    "@types/steam-user": "^5.0.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

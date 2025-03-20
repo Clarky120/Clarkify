@@ -1,13 +1,19 @@
-import { parseEvent } from "@laihoe/demoparser2";
+import { parseEvent, parseTicks } from "@laihoe/demoparser2";
 
 const parseDemo = () => {
-  const event_json = parseEvent(
-    "demos/demo.dem",
-    "player_death",
-    ["X", "Y"],
-    ["total_rounds_played"]
+  let gameEndTick = Math.max(
+    ...parseEvent("demos/demo.dem", "round_end").map((x) => x.tick)
   );
-  console.log(event_json);
+  let fields = [
+    "kills_total",
+    "deaths_total",
+    "mvps",
+    "headshot_kills_total",
+    "ace_rounds_total",
+    "score",
+  ];
+  let scoreboard = parseTicks("demos/demo.dem", fields, [gameEndTick]);
+  console.log(scoreboard);
 };
 
 export { parseDemo };

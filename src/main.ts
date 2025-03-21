@@ -2,8 +2,8 @@ require("dotenv").config({ path: "../.env" });
 
 import SteamUser from "steam-user";
 import GlobalOffensive from "globaloffensive";
-import http from 'http';
-import fs from 'fs';
+import http from "http";
+import fs from "fs";
 import { unzipDemo } from "./demo-parse/unzip-demo";
 import { parseDemo } from "./demo-parse/parse-demo";
 
@@ -30,19 +30,30 @@ cs.on("connectedToGC", () => {
 cs.on("matchList", async (data) => {
   const lastRound = data[0].roundstatsall[data[0].roundstatsall.length - 1];
   const downloadURL = lastRound.map!;
-  console.log(downloadURL)
-  const file = fs.createWriteStream("demos/demo.dem.bz2");
-  const request = await http.get(downloadURL, function(response) {
-     response.pipe(file);
-  
-     // after download completed close filestream
-     file.on("finish", async () => {
-         file.close();
-         console.log("Download Completed");
-         await unzipDemo("demo.dem.bz2");
-         parseDemo();
-     });
-  })
+  console.log(downloadURL);
+
+  // Extract demo ID from URL
+  const demoId = downloadURL.split("/").pop()?.replace(".dem.bz2", "");
+
+  if (!demoId) {
+    console.log("No demo ID found");
+    return;
+  }
+
+  console.log("Demo ID:", demoId);
+
+  const file = fs.createWriteStream(`demos/${demoId}.dem.bz2`);
+  const request = http.get(downloadURL, function (response) {
+    response.pipe(file);
+
+    // after download completed close filestream
+    file.on("finish", async () => {
+      file.close();
+      console.log("Download Completed");
+      await unzipDemo(demoId);
+      parseDemo();
+    });
+  });
 });
 
 client.on("error", () => {

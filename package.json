@@ -14,6 +14,7 @@
     "@laihoe/demoparser2-win32-x64-msvc": "^0.36.0",
     "bz2": "^1.0.1",
     "bzip2": "^0.1.1",
+    "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "globaloffensive": "^3.2.0",
     "steam-user": "^5.2.0",

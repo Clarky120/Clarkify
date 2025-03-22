@@ -26,6 +26,10 @@ const unzipDemoWindows = async (demoId: string) => {
   const input = `./demos/${demoId}.dem.bz2`;
   const output = `./output/${demoId}.dem`;
 
+  if (!fs.existsSync("./output")) {
+    fs.mkdirSync("./output");
+  }
+
   const demo = fs.readFileSync(input);
 
   if (demo) {

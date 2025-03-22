@@ -1,8 +1,8 @@
 import { parseEvent, parseTicks } from "@laihoe/demoparser2";
 
-const parseDemo = () => {
+const parseDemo = (demoId: string) => {
   let gameEndTick = Math.max(
-    ...parseEvent("demos/demo.dem", "round_end").map((x) => x.tick)
+    ...parseEvent(`output/${demoId}.dem`, "round_end").map((x) => x.tick)
   );
   let fields = [
     "kills_total",
@@ -12,7 +12,7 @@ const parseDemo = () => {
     "ace_rounds_total",
     "score",
   ];
-  let scoreboard = parseTicks("demos/demo.dem", fields, [gameEndTick]);
+  let scoreboard = parseTicks(`output/${demoId}.dem`, fields, [gameEndTick]);
   console.log(scoreboard);
 };
 

@@ -1,0 +1,15 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+
+  .inner {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}

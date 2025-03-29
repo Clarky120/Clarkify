@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>Upload Demo</h2>
+
+  <div class="drop-area" appDropZone (fileDropped)="onFileDropped($event)">
+    <p>Drag and drop your file here</p>
+    <p>or</p>
+    <button (click)="fileInput.click()">Browse</button>
+    <input
+      type="file"
+      #fileInput
+      style="display: none"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+</div>

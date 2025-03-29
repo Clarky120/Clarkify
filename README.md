@@ -11,13 +11,13 @@ https://firebase.google.com/docs/cli
 Firebase emulators
 https://firebase.google.com/docs/emulator-suite/install_and_configure
 
-**Install**
+### Install
 
 Install all npm packages
 
     sh install.sh
 
-**Environment**
+### Environment
 
 Create .env file at bff/.env
 
@@ -41,7 +41,7 @@ Create environment.ts & environment.prod.ts in admin/src/environments
     	bffUrl: 'your-bff-url',
     };
 
-**Run**
+### Run
 
 Individual
 

@@ -9,4 +9,5 @@ export const environment = {
     messagingSenderId: 'your-messaging-sender-id',
     measurementId: 'your-measurement-id',
   },
+  bffUrl: 'your-bff-url',
 };

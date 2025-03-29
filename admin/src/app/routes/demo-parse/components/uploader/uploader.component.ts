@@ -1,15 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DropZoneDirective } from '../../../../directives/drop-zone/drop-zone.directive';
 import { LoggerService } from '../../../../services/logger.service';
+import {
+  DemoParseService,
+  IUploadProgress,
+} from '../../services/demo-parse/demo-parse.service';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-uploader',
   standalone: true,
-  imports: [DropZoneDirective],
+  imports: [CommonModule, DropZoneDirective],
   templateUrl: './uploader.component.html',
   styleUrl: './uploader.component.scss',
 })
 export class UploaderComponent {
+  private _demoParseService = inject(DemoParseService);
+
+  public currentUpload!: Observable<IUploadProgress>;
+
   constructor(private _logger: LoggerService) {}
 
   onFileDropped(files: FileList): void {
@@ -25,9 +35,9 @@ export class UploaderComponent {
     }
   }
 
-  private handleFiles(files: FileList): void {
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-    }
+  private async handleFiles(files: FileList): Promise<void> {
+    if (files.length > 1) return;
+
+    this.currentUpload = await this._demoParseService.uploadFile(files[0]);
   }
 }

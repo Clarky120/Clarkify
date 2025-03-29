@@ -5,6 +5,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import apiRoutes from "./routes";
 import { logger } from "@clarkify/core";
+import { loadFirebase } from "@clarkify/core";
 
 // Load environment variables
 dotenv.config();
@@ -13,6 +14,9 @@ dotenv.config();
 logger.defaultMeta = {
   service: "bff",
 };
+
+// Connect to Firebase
+loadFirebase();
 
 // Create Express server
 const app = express();

@@ -61,10 +61,7 @@
               "buildTarget": "admin:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "allowedHosts": ["e7a6-82-40-64-70.ngrok-free.app"]
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

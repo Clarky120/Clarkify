@@ -21,6 +21,8 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "dayjs": "^1.11.13",
+    "firebase-admin": "^13.2.0",
     "winston": "^3.17.0"
   }
 }

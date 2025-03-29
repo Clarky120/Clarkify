@@ -5,6 +5,9 @@
 Node 22
 https://github.com/nvm-sh/nvm
 
+Angular CLI
+https://angular.dev/tools/cli
+
 Firebase CLI
 https://firebase.google.com/docs/cli
 

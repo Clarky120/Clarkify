@@ -4,9 +4,15 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import apiRoutes from "./routes";
+import { logger } from "@clarkify/core";
 
 // Load environment variables
 dotenv.config();
+
+// Set default meta for logger
+logger.defaultMeta = {
+  service: "bff",
+};
 
 // Create Express server
 const app = express();

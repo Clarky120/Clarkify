@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "scripts": {
+    "preinstall": "bash ./scripts/create-symlinks.sh",
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -15,6 +16,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@clarkify/core": "file:../core",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^6.0.1"
   },

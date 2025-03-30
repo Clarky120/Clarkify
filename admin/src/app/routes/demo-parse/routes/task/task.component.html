@@ -1,0 +1,8 @@
+@if (_task.task$ | async; as task) {
+  <div>
+    <h1>Task</h1>
+    <p>Status: {{ task.status }}</p>
+    <p>Created At: {{ task.createdAt }}</p>
+    <p>Updated At: {{ task.updatedAt }}</p>
+  </div>
+}

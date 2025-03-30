@@ -14,6 +14,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@clarkify/types": "file:../types",
     "@types/node": "^22.13.14",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",

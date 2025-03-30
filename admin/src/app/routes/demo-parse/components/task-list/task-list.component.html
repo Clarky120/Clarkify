@@ -1,0 +1,9 @@
+@if (_taskList.tasks$ | async; as tasks) {
+  <div class="task-list">
+    @for (task of tasks; track task.id) {
+      <div class="task-list-item" [routerLink]="['task/' + task.id]">
+        <span>{{ task.id }}</span>
+      </div>
+    }
+  </div>
+}

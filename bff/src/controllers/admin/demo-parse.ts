@@ -1,7 +1,22 @@
 import { Request, Response } from "express";
+import {
+  ICreateTaskRequest,
+  ICreateTaskResponse,
+} from "@clarkify/types/bff/admin/demo-parse";
+import { DemoParseTask } from "@clarkify/core/src/demo-parse";
+import { logger } from "@clarkify/core";
 
-export const parseDemo = async (req: Request, res: Response) => {
-  //   const { files } = req.body;
-  //   console.log(files);
-  res.status(200).json({ message: "Files uploaded successfully" });
+export const createTask = async (
+  req: Request<{}, {}, ICreateTaskRequest>,
+  res: Response<ICreateTaskResponse>
+) => {
+  try {
+    const task = new DemoParseTask(req.body.demoId);
+    await task.startTask();
+
+    return res.status(200).json({ taskId: task.id });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ error: "Failed to create task" });
+  }
 };

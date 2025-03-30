@@ -1,6 +1,7 @@
 import logger from "./logger";
 import { Logger } from "winston";
 import { getAdmin } from "./firebase";
+import { IDemoParseTask } from "@clarkify/types/demo-parse";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
@@ -14,12 +15,13 @@ export class DemoParseTask {
     this._logger = logger.child({ matchId });
 
     this._matchId = matchId;
-    this.createTask();
-
-    logger.info(`Demo Parse Task created`);
   }
 
-  private async createTask() {
+  public get id() {
+    return this._matchId;
+  }
+
+  public async startTask() {
     const fb = getAdmin();
     const ref = fb.firestore().collection("parseTask").doc(this._matchId);
 
@@ -32,19 +34,7 @@ export class DemoParseTask {
     };
 
     await ref.set(task);
+
+    logger.info(`Demo Parse Task created`);
   }
 }
-
-export interface IDemoParseTask {
-  id: string;
-  matchId: string;
-  status: TDemoParseTaskStatus;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export type TDemoParseTaskStatus =
-  | "pending"
-  | "processing"
-  | "completed"
-  | "failed";

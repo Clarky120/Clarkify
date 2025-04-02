@@ -14,6 +14,7 @@ const parseDemo = (demoId: string) => {
   ];
   let scoreboard = parseTicks(`output/${demoId}.dem`, fields, [gameEndTick]);
   console.log(scoreboard);
+  return scoreboard;
 };
 
 export { parseDemo };

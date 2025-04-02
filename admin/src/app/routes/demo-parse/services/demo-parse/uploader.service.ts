@@ -11,7 +11,7 @@ import { NetworkService } from '../../../../services/network.service';
 import {
   ICreateTaskRequest,
   ICreateTaskResponse,
-} from '@clarkify/types/bff/admin/demo-parse';
+} from '@clarkify/types/server-requests/admin/demo-parse';
 import { LoggerService } from '../../../../services/logger.service';
 
 @Injectable()

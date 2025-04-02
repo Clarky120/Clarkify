@@ -5,7 +5,7 @@ npm install
 npm run build
 cd ..
 
-cd bff
+cd server
 npm install
 npm run build
 cd ..

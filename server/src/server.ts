@@ -12,7 +12,7 @@ dotenv.config();
 
 // Set default meta for logger
 logger.defaultMeta = {
-  service: "bff",
+  service: "server",
 };
 
 // Connect to Firebase
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health check endpoint
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", message: "BFF service is running" });
+  res.status(200).json({ status: "OK", message: "Server is running" });
 });
 
 // Start server

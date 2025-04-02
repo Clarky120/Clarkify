@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   ICreateTaskRequest,
   ICreateTaskResponse,
-} from "@clarkify/types/bff/admin/demo-parse";
+} from "@clarkify/types/server-requests/admin/demo-parse";
 import { DemoParseTask } from "@clarkify/core/src/demo-parse";
 import { logger } from "@clarkify/core";
 

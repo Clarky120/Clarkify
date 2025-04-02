@@ -15,7 +15,7 @@ import { of } from 'rxjs';
 export class HealthComponent implements OnInit, OnDestroy {
   private networkService = inject(NetworkService);
 
-  isBffRunning = false;
+  isServerRunning = false;
   lastChecked: Date | null = null;
   errorMessage: string | null = null;
   private healthCheckSubscription: Subscription | null = null;
@@ -35,18 +35,18 @@ export class HealthComponent implements OnInit, OnDestroy {
         switchMap(() => {
           return this.networkService.get<any>('/health').pipe(
             catchError((error) => {
-              this.isBffRunning = false;
+              this.isServerRunning = false;
               this.errorMessage = `Error: ${error.message || 'Unknown error'}`;
               return of(null);
-            })
+            }),
           );
-        })
+        }),
       )
       .subscribe((response) => {
         this.lastChecked = new Date();
 
         if (response) {
-          this.isBffRunning = true;
+          this.isServerRunning = true;
           this.errorMessage = null;
         }
       });
@@ -60,16 +60,16 @@ export class HealthComponent implements OnInit, OnDestroy {
       .get<any>('/health')
       .pipe(
         catchError((error) => {
-          this.isBffRunning = false;
+          this.isServerRunning = false;
           this.errorMessage = `Error: ${error.message || 'Unknown error'}`;
           return of(null);
-        })
+        }),
       )
       .subscribe((response) => {
         this.lastChecked = new Date();
 
         if (response) {
-          this.isBffRunning = true;
+          this.isServerRunning = true;
           this.errorMessage = null;
         }
       });

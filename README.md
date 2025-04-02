@@ -22,7 +22,7 @@ Install all npm packages
 
 ### Environment
 
-Create .env file at bff/.env
+Create .env file at server/.env
 
     PORT=3000
     NODE_ENV=development
@@ -41,7 +41,7 @@ Create environment.ts & environment.prod.ts in admin/src/environments
     		messagingSenderId: 'your-messaging-sender-id',
     		measurementId: 'your-measurement-id',
     	},
-    	bffUrl: 'your-bff-url',
+    	serverUrl: 'your-server-url',
     };
 
 ### Run
@@ -49,7 +49,7 @@ Create environment.ts & environment.prod.ts in admin/src/environments
 Individual
 
     sh emu.sh
-    sh bff.sh
+    sh server.sh
     cd admin && ng serve --host 0.0.0.0
 
 Using tmux

@@ -25,7 +25,9 @@
       padding: 40px;
       text-align: center;
       cursor: pointer;
-      transition: border 0.3s, background-color 0.3s;
+      transition:
+        border 0.3s,
+        background-color 0.3s;
 
       &.file-over {
         border-color: #2196f3;
@@ -52,5 +54,14 @@
         }
       }
     }
+  }
+
+  .uploading {
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
   }
 }

@@ -11,18 +11,18 @@ export class NetworkService {
   private http = inject(HttpClient);
   private logger = inject(LoggerService);
 
-  // Get BFF URL from environment
-  private bffUrl = environment.bffUrl;
+  // Get Server URL from environment
+  private serverUrl = environment.serverUrl;
 
   /**
-   * Performs a GET request to the BFF server
+   * Performs a GET request to the Server server
    */
   get<T>(
     endpoint: string,
     params?: Record<string, any>,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
   ): Observable<T> {
-    const url = `${this.bffUrl}${endpoint}`;
+    const url = `${this.serverUrl}${endpoint}`;
     let httpParams = new HttpParams();
 
     if (params) {
@@ -38,37 +38,37 @@ export class NetworkService {
   }
 
   /**
-   * Performs a POST request to the BFF server
+   * Performs a POST request to the server
    */
   post<T>(endpoint: string, body: any, headers?: HttpHeaders): Observable<T> {
-    const url = `${this.bffUrl}${endpoint}`;
+    const url = `${this.serverUrl}${endpoint}`;
     this.logger.debug('NetworkService.post', url, body);
     return this.http.post<T>(url, body, { headers });
   }
 
   /**
-   * Performs a PUT request to the BFF server
+   * Performs a PUT request to the server
    */
   put<T>(endpoint: string, body: any, headers?: HttpHeaders): Observable<T> {
-    const url = `${this.bffUrl}${endpoint}`;
+    const url = `${this.serverUrl}${endpoint}`;
     this.logger.debug('NetworkService.put', url, body);
     return this.http.put<T>(url, body, { headers });
   }
 
   /**
-   * Performs a DELETE request to the BFF server
+   * Performs a DELETE request to the server
    */
   delete<T>(endpoint: string, headers?: HttpHeaders): Observable<T> {
-    const url = `${this.bffUrl}${endpoint}`;
+    const url = `${this.serverUrl}${endpoint}`;
     this.logger.debug('NetworkService.delete', url);
     return this.http.delete<T>(url, { headers });
   }
 
   /**
-   * Performs a PATCH request to the BFF server
+   * Performs a PATCH request to the server
    */
   patch<T>(endpoint: string, body: any, headers?: HttpHeaders): Observable<T> {
-    const url = `${this.bffUrl}${endpoint}`;
+    const url = `${this.serverUrl}${endpoint}`;
     this.logger.debug('NetworkService.patch', url, body);
     return this.http.patch<T>(url, body, { headers });
   }

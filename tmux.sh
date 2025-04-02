@@ -21,7 +21,7 @@ tmux split-window -h
 tmux send-keys -t clarkify-backend:0.0 'nvm use 22 && sh emu.sh' C-m
 
 # Middle column
-tmux send-keys -t clarkify-backend:0.1 'nvm use 22 && sh bff.sh' C-m
+tmux send-keys -t clarkify-backend:0.1 'nvm use 22 && sh server.sh' C-m
 
 # Right column
 tmux send-keys -t clarkify-backend:0.2 'nvm use 22 && cd admin && ng serve --host 0.0.0.0' C-m

@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import apiRoutes from "./routes";
+// import apiRoutes from "./routes";
 import { logger } from "@clarkify/core";
 import { loadFirebase } from "@clarkify/core";
 
@@ -12,14 +12,14 @@ dotenv.config();
 
 // Set default meta for logger
 logger.defaultMeta = {
-  service: "bff",
+  service: "server",
 };
 
 // Connect to Firebase
 loadFirebase();
 
 // Create Express server
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -30,11 +30,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
-app.use("/", apiRoutes);
+// app.use("/", apiRoutes);
 
 // Health check endpoint
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", message: "BFF service is running" });
+  res.status(200).json({ status: "OK", message: "Server is running" });
 });
 
 // Start server
@@ -42,4 +42,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export default app;
+export * from "./routes/admin/demo-parse";

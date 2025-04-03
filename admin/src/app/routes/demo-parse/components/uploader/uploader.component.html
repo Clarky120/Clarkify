@@ -1,0 +1,65 @@
+<div class="container">
+  @if (currentUpload$ | async; as upload) {
+    <div class="uploading">
+      @switch (upload.state) {
+        @case ("pending") {
+          <div class="status-card pending">
+            <div class="icon-container">
+              <div class="spinner"></div>
+            </div>
+            <h3>Preparing Upload</h3>
+            <p>Getting things ready...</p>
+          </div>
+        }
+        @case ("processing") {
+          <div class="status-card processing">
+            <div class="icon-container">
+              <div class="spinner"></div>
+            </div>
+            <h3>Uploading Demo</h3>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="upload.progress"></div>
+            </div>
+            <p class="progress-text">{{ upload.progress | number:'1.0-0' }}% Complete</p>
+          </div>
+        }
+        @case ("error") {
+          <div class="status-card error">
+            <div class="icon-container">
+              <div class="error-icon">!</div>
+            </div>
+            <h3>Upload Failed</h3>
+            <p class="error-message">{{ upload.error }}</p>
+            <button class="retry-button" (click)="retry()">Try Again</button>
+          </div>
+        }
+      }
+    </div>
+  } @else {
+    <div class="upload">
+      <h2>Upload Demo</h2>
+      <p class="upload-description">Upload your demo file to analyze and process it</p>
+
+      <div class="drop-area" appDropZone (fileDropped)="onFileDropped($event)">
+        <div class="upload-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+        <p class="drop-title">Drag and drop your file here</p>
+        <p class="drop-subtitle">or</p>
+        <button class="browse-button" (click)="fileInput.click()">Browse Files</button>
+        <p class="file-type-hint">Accepts .dem files</p>
+        <input
+          type="file"
+          #fileInput
+          style="display: none"
+          (change)="onFileSelected($event)"
+          accept=".dem"
+        />
+      </div>
+    </div>
+  }
+</div>

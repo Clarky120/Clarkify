@@ -1,0 +1,222 @@
+:host {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+
+  .upload {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+
+    h2 {
+      margin-bottom: 0;
+      color: #333;
+      font-size: 28px;
+    }
+
+    .upload-description {
+      color: #666;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .drop-area {
+      width: 100%;
+      height: 320px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: #f9f9f9;
+
+      &:hover {
+        border-color: #2196f3;
+        background-color: #f5f9fd;
+      }
+
+      &.file-over {
+        border-color: #2196f3;
+        background-color: rgba(33, 150, 243, 0.1);
+        transform: scale(1.02);
+      }
+
+      .upload-icon {
+        margin-bottom: 15px;
+        color: #666;
+      }
+
+      .drop-title {
+        margin: 8px 0;
+        color: #333;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .drop-subtitle {
+        margin: 8px 0;
+        color: #666;
+      }
+
+      .file-type-hint {
+        margin-top: 15px;
+        color: #888;
+        font-size: 14px;
+      }
+
+      .browse-button {
+        padding: 12px 24px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 10px 0;
+
+        &:hover {
+          background-color: #0b7dda;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  .uploading {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+
+    .status-card {
+      width: 100%;
+      padding: 30px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+      h3 {
+        margin: 15px 0 10px;
+        color: #333;
+      }
+
+      p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      &.pending, &.processing {
+        background-color: #f5f9fd;
+      }
+
+      &.error {
+        background-color: #fff5f5;
+      }
+
+      .icon-container {
+        height: 60px;
+        width: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(33, 150, 243, 0.2);
+        border-radius: 50%;
+        border-top-color: #2196f3;
+        animation: spin 1s linear infinite;
+      }
+
+      .error-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ff5252;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e0e0e0;
+        border-radius: 6px;
+        margin: 15px 0 5px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #2196f3;
+        border-radius: 6px;
+        transition: width 0.3s ease;
+      }
+
+      .progress-text {
+        color: #2196f3;
+        font-weight: 500;
+      }
+
+      .error-message {
+        color: #ff5252;
+        margin: 10px 0;
+      }
+
+      .retry-button {
+        padding: 10px 20px;
+        background-color: #ff5252;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+
+        &:hover {
+          background-color: #e04545;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

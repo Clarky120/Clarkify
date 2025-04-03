@@ -8,6 +8,7 @@ let app: App;
 export const loadFirebase = () => {
   app = initializeApp({
     credential: admin.credential.cert(serviceAccount),
+    storageBucket: "clarkify-dev.firebasestorage.app",
   });
 
   return app;

@@ -1,8 +1,8 @@
 export interface ICreateTaskRequest {
-  demoId: string;
+  matchId: string;
 }
 
 export interface ICreateTaskResponse {
-  taskId?: string;
+  taskId: string;
   error?: string;
 }

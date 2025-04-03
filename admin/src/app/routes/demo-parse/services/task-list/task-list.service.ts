@@ -23,7 +23,7 @@ export class TaskListService {
 
   startListener() {
     const q = query(
-      collection(this._firestore, 'parseTask'),
+      collection(this._firestore, 'parse-tasks'),
       orderBy('createdAt', 'desc'),
     );
 

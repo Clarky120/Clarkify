@@ -22,6 +22,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@laihoe/demoparser2": "^0.38.1",
     "dayjs": "^1.11.13",
     "firebase-admin": "^13.2.0",
     "winston": "^3.17.0"

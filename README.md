@@ -22,6 +22,8 @@ Install all npm packages
 
 ### Environment
 
+Add firebase service account key at core/service-keys/dev.json or core/service-keys/prod.json
+
 Create .env file at server/.env
 
     PORT=3000

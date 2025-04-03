@@ -4,6 +4,7 @@ export interface IDemoParseTask {
   status: TDemoParseTaskStatus;
   createdAt: string;
   updatedAt: string;
+  error?: any;
 }
 
 export type TDemoParseTaskStatus =

@@ -29,8 +29,8 @@ export class UploaderService {
     });
     const uploadFinished = new Subject<void>();
 
-    const doc = ref(this._storage, `demos/${file.name}`);
-    const taskId = crypto.randomUUID();
+    const matchId = Math.random().toString(36).substring(2, 10);
+    const doc = ref(this._storage, `demos/${matchId}.dem`);
     const uploadTask = uploadBytesResumable(doc, file);
 
     // Listen to the upload progress
@@ -48,11 +48,12 @@ export class UploaderService {
         const url = await getDownloadURL(doc);
 
         try {
-          await this.createTask(taskId);
-          this._logger.info('DemoParseService', 'Task created', taskId);
+          const taskId = await this.createTask(matchId);
+          this._logger.info('DemoParseService', 'Task created', matchId);
 
           uploadProgress.next({
             state: 'done',
+            matchId: matchId,
             taskId: taskId,
             progress: 100,
             downloadUrl: url,
@@ -61,7 +62,7 @@ export class UploaderService {
           this._logger.error('DemoParseService', 'Error creating task', err);
           uploadProgress.next({
             state: 'error',
-            taskId: taskId,
+            matchId: matchId,
             progress: 0,
             error: 'Failed to create task',
           });
@@ -73,7 +74,7 @@ export class UploaderService {
         this._logger.error('DemoParseService', 'Error uploading file', error);
         uploadProgress.next({
           state: 'error',
-          taskId: taskId,
+          matchId: matchId,
           progress: 0,
           error: error.message,
         });
@@ -83,21 +84,25 @@ export class UploaderService {
     return uploadProgress.asObservable();
   }
 
-  private async createTask(demoId: string) {
+  private async createTask(matchId: string): Promise<string> {
     const body: ICreateTaskRequest = {
-      demoId: demoId,
+      matchId: matchId,
     };
 
-    this._networkService
-      .post<ICreateTaskResponse>('/admin/demo-parse/create-task', body)
-      .subscribe((res) => {
-        console.log(res);
-      });
+    return new Promise((resolve, reject) => {
+      this._networkService
+        .post<ICreateTaskResponse>('/admin/demo-parse/create-task', body)
+        .subscribe({
+          next: (res) => resolve(res.taskId),
+          error: (err) => reject(err),
+        });
+    });
   }
 }
 
 export interface IUploadProgress {
   state: 'pending' | 'processing' | 'done' | 'error';
+  matchId?: string;
   taskId?: string;
   progress?: number;
   downloadUrl?: string;

@@ -2,17 +2,20 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task/task.service';
+import { MatchService } from '../../services/match/match.service';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgxJsonViewerModule],
   templateUrl: './task.component.html',
   styleUrl: './task.component.scss',
-  providers: [TaskService],
+  providers: [TaskService, MatchService],
 })
 export class TaskComponent {
   public _task = inject(TaskService);
+  public _match = inject(MatchService);
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
 
@@ -27,5 +30,11 @@ export class TaskComponent {
     const id = params.get('id') as string;
 
     this._task.startTaskListener(id);
+
+    this._task.task$.subscribe((task) => {
+      if (task?.status === 'completed') {
+        this._match.startMatchListener(task.matchId);
+      }
+    });
   }
 }

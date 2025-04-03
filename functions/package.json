@@ -17,6 +17,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@clarkify/core": "file:./core",
+    "@clarkify/types": "file:./types",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^6.0.1"
   },

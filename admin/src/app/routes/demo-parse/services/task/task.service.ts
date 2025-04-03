@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
   doc,
-  docSnapshots,
   Firestore,
   onSnapshot,
   Unsubscribe,
@@ -20,7 +19,11 @@ export class TaskService {
   constructor() {}
 
   startTaskListener(id: string) {
-    const ref = doc(this._firestore, 'parseTask', id);
+    if (this.taskUnsub) {
+      this.taskUnsub();
+    }
+
+    const ref = doc(this._firestore, 'parse-tasks', id);
 
     this.taskUnsub = onSnapshot(ref, (snapshot) => {
       if (snapshot.exists()) {

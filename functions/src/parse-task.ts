@@ -9,7 +9,6 @@ exports.onParseTaskCreated = onDocumentCreated(
     if (!taskData) return;
 
     const task = await DemoParseTask.create({ task: taskData });
-
-    await task.parseData();
+    await task.run();
   }
 );

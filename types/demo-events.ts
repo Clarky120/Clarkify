@@ -1,9 +1,3 @@
-export interface IPlayer {
-  name: string;
-  steamid: string;
-  team_num: number;
-}
-
 export interface IPlayerDeathEvent {
   assistedflash: boolean;
   assister_name: string | null;
@@ -32,4 +26,20 @@ export interface IPlayerDeathEvent {
   weapon_itemid: string;
   weapon_originalowner_xuid: string;
   wipe: number;
+}
+
+export interface IRoundStartEvent {
+  event_name: string;
+  is_warmup_period: boolean;
+  round: number;
+  tick: number;
+}
+
+export interface IRoundEndEvent {
+  event_name: string;
+  is_warmup_period: boolean;
+  reason: string;
+  round: number;
+  tick: number;
+  winner: string;
 }

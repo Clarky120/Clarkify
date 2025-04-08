@@ -25,7 +25,9 @@
     }
   }
 
-  .task-card, .match-data-card, .error-card {
+  .task-card,
+  .match-data-card,
+  .error-card {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -96,7 +98,8 @@
     }
   }
 
-  .match-data-card, .error-card {
+  .match-data-card,
+  .error-card {
     h3 {
       margin-top: 0;
       margin-bottom: 16px;
@@ -117,9 +120,8 @@
     background-color: #fff5f5;
 
     .error-message {
-      color: #f44336;
       font-family: monospace;
-      background-color: rgba(244, 67, 54, 0.1);
+      background-color: #f8f9fa;
       padding: 16px;
       border-radius: 8px;
       white-space: pre-wrap;

@@ -70,4 +70,4 @@ node_modules/
 
 lib/
 local-data/
-temp/
+tmp/

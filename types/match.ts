@@ -1,8 +1,8 @@
 export interface IMatch {
   id: string;
-  players: Map<string, IPlayer>;
+  players: Record<string, IPlayer>;
   metadata: IMatchMetadata;
-  scoreboard: Map<string, IMatchScoreboard>;
+  scoreboard: Record<string, IMatchScoreboard>;
   kills: IMatchKills[];
   createdAt: string;
   updatedAt: string;

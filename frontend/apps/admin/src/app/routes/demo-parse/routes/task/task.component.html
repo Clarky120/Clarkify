@@ -35,6 +35,15 @@
 
     @if (task.status === "completed") {
       <div class="match-data-card">
+        <h3>Scoreboard</h3>
+        @if (_match.match$ | async; as match) {
+          <scoreboard
+            [scoreboard]="Object.values(match.scoreboard)"
+          ></scoreboard>
+        }
+      </div>
+
+      <div class="match-data-card">
         <h3>Match Data</h3>
         <div class="json-viewer-container">
           <ngx-json-viewer [json]="_match.match$ | async"></ngx-json-viewer>

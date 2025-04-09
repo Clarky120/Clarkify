@@ -4,11 +4,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TaskService } from '../../services/task/task.service';
 import { MatchService } from '../../services/match/match.service';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { Scoreboard } from 'scoreboard';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgxJsonViewerModule],
+  imports: [CommonModule, RouterModule, NgxJsonViewerModule, Scoreboard],
   templateUrl: './task.component.html',
   styleUrl: './task.component.scss',
   providers: [TaskService, MatchService],
@@ -18,6 +19,7 @@ export class TaskComponent {
   public _match = inject(MatchService);
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
+  protected readonly Object = Object;
 
   ngOnInit() {
     const params = this._route.snapshot.paramMap;

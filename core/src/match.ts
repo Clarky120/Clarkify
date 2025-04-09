@@ -87,8 +87,8 @@ export class ParsedMatch {
 
     const safeVal = {
       ...this._match,
-      scoreboard: Object.fromEntries(this._match.scoreboard.entries()),
-      players: Object.fromEntries(this._match.players.entries()),
+      scoreboard: this._match.scoreboard,
+      players: this._match.players,
       createdAt: dayjs().utc().toISOString(),
       updatedAt: dayjs().utc().toISOString(),
     };

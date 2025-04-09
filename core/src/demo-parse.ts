@@ -223,7 +223,7 @@ export class DemoParseTask {
       const metadata = this.parseMetadata();
       const players = this.parsePlayers(metadata);
       const scoreboard = this.parseScoreboard(players, metadata);
-      const kills = this.parseKills(players, metadata);
+      const kills = this.parseKills(players);
 
       this._match = await ParsedMatch.create({
         id: this._task.matchId,
@@ -285,7 +285,7 @@ export class DemoParseTask {
    * @param metadata The metadata
    * @returns The players
    */
-  private parsePlayers(metadata: IMatchMetadata): Map<string, IPlayer> {
+  private parsePlayers(metadata: IMatchMetadata): Record<string, IPlayer> {
     const allPlayerTicks = parseTicks(
       this._filePath,
       ["team_num"],
@@ -302,7 +302,7 @@ export class DemoParseTask {
       });
     }
 
-    return playerMap;
+    return Object.fromEntries(playerMap);
   }
 
   /**
@@ -312,9 +312,9 @@ export class DemoParseTask {
    * @returns The scoreboard
    */
   private parseScoreboard(
-    players: Map<string, IPlayer>,
+    players: Record<string, IPlayer>,
     metadata: IMatchMetadata
-  ): Map<string, IMatchScoreboard> {
+  ): Record<string, IMatchScoreboard> {
     const allDeaths = parseEvent(
       this._filePath,
       "player_death",
@@ -339,7 +339,7 @@ export class DemoParseTask {
         headshots: 0;
       }
     >();
-    for (const player of players.values()) {
+    for (const player of Object.values(players)) {
       aggregate.set(player.steamid, {
         playerId: player.steamid,
         kills: 0,
@@ -353,7 +353,7 @@ export class DemoParseTask {
     for (const death of allDeaths) {
       if (death.is_warmup_period) continue;
 
-      const victim = players.get(death.user_steamid);
+      const victim = players[death.user_steamid];
       if (!victim) continue;
 
       const scoreEntry = aggregate.get(victim.steamid);
@@ -361,7 +361,7 @@ export class DemoParseTask {
         scoreEntry.deaths++;
       }
 
-      const attacker = players.get(death.attacker_steamid);
+      const attacker = players[death.attacker_steamid];
       /** attacker can be null if the attacker is the bomb or a suicide */
       if (attacker) {
         const scoreEntry = aggregate.get(attacker.steamid);
@@ -375,7 +375,7 @@ export class DemoParseTask {
       }
 
       if (death.assister_steamid) {
-        const assister = players.get(death.assister_steamid);
+        const assister = players[death.assister_steamid];
         if (assister) {
           const scoreEntry = aggregate.get(assister.steamid);
           if (scoreEntry) {
@@ -390,7 +390,7 @@ export class DemoParseTask {
     }
 
     const scoreboard = new Map<string, IMatchScoreboard>();
-    for (const [steamid, player] of players.entries()) {
+    for (const [steamid, player] of Object.entries(players)) {
       const aggregateEntry = aggregate.get(steamid);
       if (!aggregateEntry) continue;
 
@@ -411,13 +411,10 @@ export class DemoParseTask {
       });
     }
 
-    return scoreboard;
+    return Object.fromEntries(scoreboard);
   }
 
-  private parseKills(
-    players: Map<string, IPlayer>,
-    metadata: IMatchMetadata
-  ): IMatchKills[] {
+  private parseKills(players: Record<string, IPlayer>): IMatchKills[] {
     const allDeaths = parseEvent(
       this._filePath,
       "player_death",
@@ -435,10 +432,10 @@ export class DemoParseTask {
     for (const death of allDeaths) {
       if (death.is_warmup_period) continue;
 
-      const victim = players.get(death.user_steamid);
+      const victim = players[death.user_steamid];
       if (!victim) continue;
 
-      const attacker = players.get(death.attacker_steamid);
+      const attacker = players[death.attacker_steamid];
       if (!attacker) continue;
 
       kills.push({

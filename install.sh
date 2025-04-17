@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd backend
+
 cd core
 npm install
 npm run build
@@ -13,7 +15,8 @@ cd ..
 cd functions
 npm install
 npm run build
-cd ..
+
+cd ../frontend
 
 cd admin
 npm install

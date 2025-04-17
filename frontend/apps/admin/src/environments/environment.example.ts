@@ -10,4 +10,11 @@ export const environment = {
     measurementId: 'your-measurement-id',
   },
   serverUrl: 'your-server-url',
+  useEmulators: true,
+  authEmulatorHost: 'your-auth-emulator-host',
+  authEmulatorPort: 9099,
+  firestoreEmulatorHost: 'your-firestore-emulator-host',
+  firestoreEmulatorPort: 8080,
+  storageEmulatorHost: 'your-storage-emulator-host',
+  storageEmulatorPort: 9199,
 };

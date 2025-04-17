@@ -11,4 +11,5 @@ export type TDemoParseTaskStatus =
   | "pending"
   | "processing"
   | "completed"
-  | "failed";
+  | "failed"
+  | "retry";

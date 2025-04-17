@@ -2,4 +2,4 @@
 
 echo "Starting development environment with auto-recompile and server restart..."
 
-cd server && npm run watch:all 
+cd backend/server && npm run watch:all 

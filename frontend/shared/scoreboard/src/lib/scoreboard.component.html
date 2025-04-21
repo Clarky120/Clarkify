@@ -1,0 +1,12 @@
+<div class="container">
+  @switch (mode) {
+    @case ("seperate") {
+      <sortable-table [tableData]="teamATable"></sortable-table>
+      <sortable-table [tableData]="teamBTable"></sortable-table>
+    }
+
+    @case ("joined") {
+      <sortable-table [tableData]="joinedTable"></sortable-table>
+    }
+  }
+</div>

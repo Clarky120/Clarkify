@@ -1,0 +1,63 @@
+@if (_task.task$ | async; as task) {
+  <div class="task-container">
+    <div class="task-header">
+      <h1>Task Details</h1>
+      <div class="task-id">ID: {{ task.id }}</div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-info">
+        <div class="info-section">
+          <h3>Task Information</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Status:</span>
+              <span class="status-badge" [ngClass]="task.status">{{
+                task.status
+              }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Match ID:</span>
+              <span class="value">{{ task.matchId }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Created:</span>
+              <span class="value">{{ task.createdAt | date: "medium" }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Updated:</span>
+              <span class="value">{{ task.updatedAt | date: "medium" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (task.status === "completed") {
+      <div class="match-data-card">
+        <h3>Scoreboard</h3>
+        @if (_match.match$ | async; as match) {
+          <scoreboard
+            [scoreboard]="Object.values(match.scoreboard)"
+          ></scoreboard>
+        }
+      </div>
+
+      <div class="match-data-card">
+        <h3>Match Data</h3>
+        <div class="json-viewer-container">
+          <ngx-json-viewer [json]="_match.match$ | async"></ngx-json-viewer>
+        </div>
+      </div>
+    }
+
+    @if (task.status === "failed" && task.error) {
+      <div class="error-card">
+        <h3>Error Details</h3>
+        <div class="error-message">
+          <ngx-json-viewer [json]="task.error"></ngx-json-viewer>
+        </div>
+      </div>
+    }
+  </div>
+}

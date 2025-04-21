@@ -22,15 +22,15 @@ Install all npm packages
 
 ### Environment
 
-Add firebase service account key at core/service-keys/dev.json or core/service-keys/prod.json
+Add firebase service account key at backend/core/service-keys/dev.json or core/service-keys/prod.json
 
-Create .env file at server/.env
+Create .env file at backend/server/.env
 
     PORT=3000
     NODE_ENV=development
     LOG_LEVEL=debug
 
-Create environment.ts & environment.prod.ts in admin/src/environments
+Create environment.ts & environment.prod.ts in frontend/admin/src/environments
 
     export const environment = {
     	production: false,

@@ -1,0 +1,30 @@
+{
+  "name": "@clarkify/core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --sourceMap",
+    "watch": "tsc -w",
+    "dev": "nodemon --watch src --ext ts --exec 'npm run build'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@clarkify/types": "file:../../types",
+    "@types/node": "^22.13.14",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@laihoe/demoparser2": "^0.38.1",
+    "dayjs": "^1.11.13",
+    "firebase-admin": "^13.2.0",
+    "winston": "^3.17.0"
+  }
+}

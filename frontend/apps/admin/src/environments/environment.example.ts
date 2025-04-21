@@ -1,0 +1,20 @@
+export const environment = {
+  production: false,
+  firebase: {
+    projectId: 'your-project-id',
+    appId: 'your-app-id',
+    storageBucket: 'your-storage-bucket',
+    apiKey: 'your-api-key',
+    authDomain: 'your-auth-domain',
+    messagingSenderId: 'your-messaging-sender-id',
+    measurementId: 'your-measurement-id',
+  },
+  serverUrl: 'your-server-url',
+  useEmulators: true,
+  authEmulatorHost: 'your-auth-emulator-host',
+  authEmulatorPort: 9099,
+  firestoreEmulatorHost: 'your-firestore-emulator-host',
+  firestoreEmulatorPort: 8080,
+  storageEmulatorHost: 'your-storage-emulator-host',
+  storageEmulatorPort: 9199,
+};

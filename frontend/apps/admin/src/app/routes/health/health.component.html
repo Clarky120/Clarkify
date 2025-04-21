@@ -1,0 +1,21 @@
+<div class="health-container">
+  <h2>System Health</h2>
+
+  <div class="health-card">
+    <h3>Server</h3>
+    <div
+      class="status-indicator"
+      [ngClass]="{ online: isServerRunning, offline: !isServerRunning }"
+    >
+      <span class="status-dot"></span>
+      <span>{{ isServerRunning ? "Online" : "Offline" }}</span>
+    </div>
+
+    <div class="details">
+      <p *ngIf="lastChecked">
+        Last checked: {{ lastChecked | date: "medium" }}
+      </p>
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </div>
+  </div>
+</div>

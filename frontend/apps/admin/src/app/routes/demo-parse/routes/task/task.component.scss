@@ -1,0 +1,130 @@
+.task-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h1 {
+      margin: 0;
+      color: #333;
+      font-size: 28px;
+    }
+
+    .task-id {
+      color: #666;
+      font-size: 14px;
+      background-color: #f5f5f5;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  }
+
+  .task-card,
+  .match-data-card,
+  .error-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .task-info {
+    .info-section {
+      h3 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        color: #333;
+        font-size: 18px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+
+        .info-item {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .label {
+            font-size: 14px;
+            color: #666;
+          }
+
+          .value {
+            font-size: 16px;
+            color: #333;
+          }
+
+          .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: capitalize;
+            width: fit-content;
+
+            &.pending {
+              background-color: #f5f9fd;
+              color: #2196f3;
+            }
+
+            &.processing {
+              background-color: #fff8e1;
+              color: #ffa000;
+            }
+
+            &.completed {
+              background-color: #e8f5e9;
+              color: #4caf50;
+            }
+
+            &.failed {
+              background-color: #fff5f5;
+              color: #f44336;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .match-data-card,
+  .error-card {
+    h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #333;
+      font-size: 18px;
+    }
+  }
+
+  .json-viewer-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    overflow: auto;
+    max-height: 600px;
+  }
+
+  .error-card {
+    background-color: #fff5f5;
+
+    .error-message {
+      font-family: monospace;
+      background-color: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  }
+}

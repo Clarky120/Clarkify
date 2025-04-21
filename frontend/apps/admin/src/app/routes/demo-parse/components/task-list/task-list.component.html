@@ -1,0 +1,20 @@
+@if (_taskList.tasks$ | async; as tasks) {
+  <div class="task-list">
+    @for (task of tasks; track task.id) {
+      <div class="task-list-item" [routerLink]="['task/' + task.id]">
+        <div class="task-info">
+          <span class="task-id">{{ task.id }}</span>
+          <div class="task-details">
+            <span class="task-date">Updated: {{ task.updatedAt | date:'medium' }}</span>
+            <span class="task-status" [ngClass]="'status-' + task.status">{{ task.status }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading tasks...</p>
+  </div>
+}

@@ -1,0 +1,20 @@
+layout  {
+    pane split_direction="vertical" {
+        pane {
+            command "bash"
+            args "-c" "source ~/.nvm/nvm.sh && nvm use 22 && sh emu.sh"
+            close_on_exit false
+        }
+        pane {
+            command "bash"
+            args "-c" "source ~/.nvm/nvm.sh && nvm use 22 && sh server.sh"
+            close_on_exit false
+        }
+        pane {
+            command "bash"
+            args "-c" "source ~/.nvm/nvm.sh && nvm use 22 && cd frontend && ng serve admin --host 0.0.0.0 --port 4300"
+            close_on_exit false
+        }
+    }
+
+}

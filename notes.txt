@@ -1,0 +1,10 @@
+      const events = parseEvent(
+        `/tmp/${this._task.matchId}.dem`,
+        "weapon_fire",
+        [],
+        ["active_weapon_name"]
+      );
+
+      const flashbangThrows = events.filter(
+        (x: any) => x.weapon === "weapon_flashbang"
+      );

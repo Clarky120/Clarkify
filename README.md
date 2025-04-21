@@ -32,7 +32,7 @@ Create .env file at server/.env
 
 Create environment.ts & environment.prod.ts in admin/src/environments
 
-    export  const  environment  = {
+    export const environment = {
     	production: false,
     	firebase: {
     		projectId: 'your-project-id',
@@ -44,6 +44,13 @@ Create environment.ts & environment.prod.ts in admin/src/environments
     		measurementId: 'your-measurement-id',
     	},
     	serverUrl: 'your-server-url',
+    	useEmulators: true,
+    	authEmulatorHost: 'your-auth-emulator-host',
+    	authEmulatorPort: 9099,
+    	firestoreEmulatorHost: 'your-firestore-emulator-host',
+    	firestoreEmulatorPort: 8080,
+    	storageEmulatorHost: 'your-storage-emulator-host',
+    	storageEmulatorPort: 9199,
     };
 
 ### Run
@@ -54,6 +61,6 @@ Individual
     sh server.sh
     cd admin && ng serve --host 0.0.0.0
 
-Using tmux
+Using zellij
 
-    sh tmux.sh
+    sh start.sh

@@ -1,8 +1,10 @@
 {
   "name": "@clarkify/core",
   "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --sourceMap",
     "watch": "tsc -w",
     "dev": "nodemon --watch src --ext ts --exec 'npm run build'",
     "test": "echo \"Error: no test specified\" && exit 1"

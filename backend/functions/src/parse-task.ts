@@ -1,8 +1,5 @@
-import {
-  onDocumentCreated,
-  onDocumentUpdated,
-} from "firebase-functions/v2/firestore";
-import { IDemoParseTask } from "@clarkify/types/demo-parse";
+import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import { IDemoParseTask } from "@clarkify/types";
 import { DemoParseTask } from "@clarkify/core";
 
 exports.onParseTaskCreated = onDocumentCreated(
@@ -16,15 +13,15 @@ exports.onParseTaskCreated = onDocumentCreated(
   }
 );
 
-exports.onParseTaskCreated = onDocumentUpdated(
-  { document: "/parse-tasks/{parseTaskId}", region: "europe-west2" },
-  async (event) => {
-    const taskData = event.data?.after.data() as IDemoParseTask;
-    if (!taskData) return;
+// exports.onParseTaskCreated = onDocumentUpdated(
+//   { document: "/parse-tasks/{parseTaskId}", region: "europe-west2" },
+//   async (event) => {
+//     const taskData = event.data?.after.data() as IDemoParseTask;
+//     if (!taskData) return;
 
-    if (taskData.status !== "retry") return;
+//     if (taskData.status !== "retry") return;
 
-    const task = await DemoParseTask.load({ task: taskData });
-    await task.run();
-  }
-);
+//     const task = await DemoParseTask.load({ task: taskData });
+//     await task.run();
+//   }
+// );

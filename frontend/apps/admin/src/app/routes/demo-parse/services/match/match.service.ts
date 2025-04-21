@@ -5,7 +5,7 @@ import {
   onSnapshot,
   Unsubscribe,
 } from '@angular/fire/firestore';
-import { IMatch } from '@clarkify/types/match';
+import { IMatch } from '@clarkify/types';
 import { BehaviorSubject } from 'rxjs';
 import { LoggerService } from '../../../../services/logger.service';
 

@@ -8,7 +8,7 @@ import {
   query,
   Unsubscribe,
 } from '@angular/fire/firestore';
-import { IDemoParseTask } from '@clarkify/types/demo-parse';
+import { IDemoParseTask } from '@clarkify/types';
 import { BehaviorSubject } from 'rxjs';
 import { LoggerService } from '../../../../services/logger.service';
 @Injectable()

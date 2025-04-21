@@ -1,10 +1,7 @@
 import logger from "./logger";
 import { Logger } from "winston";
 import { getAdmin } from "./firebase";
-import {
-  IDemoParseTask,
-  TDemoParseTaskStatus,
-} from "@clarkify/types/demo-parse";
+import { IDemoParseTask, TDemoParseTaskStatus } from "@clarkify/types";
 import {
   IMatchMetadata,
   IMatchRound,
@@ -13,7 +10,7 @@ import {
   IMatchTimelineDamage,
   IMatchTimelineDeath,
   IPlayer,
-} from "@clarkify/types/match";
+} from "@clarkify/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { parseEvent, parseEvents, parseTicks } from "@laihoe/demoparser2";
@@ -22,9 +19,8 @@ import fs from "fs";
 import {
   IPlayerDeathEvent,
   IPlayerHurtEvent,
-  IRoundEndEvent,
   IRoundStartEvent,
-} from "@clarkify/types/demo-events";
+} from "@clarkify/types";
 import { ParsedMatch } from "./match";
 dayjs.extend(utc);
 

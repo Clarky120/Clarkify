@@ -4,7 +4,7 @@ import {
   ICreateTaskResponse,
   IRetryTaskRequest,
   IRetryTaskResponse,
-} from "@clarkify/types/server-requests/admin/demo-parse";
+} from "@clarkify/types";
 import { DemoParseTask } from "@clarkify/core";
 import { logger } from "@clarkify/core";
 

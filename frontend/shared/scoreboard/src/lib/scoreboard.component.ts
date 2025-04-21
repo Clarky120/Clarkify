@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IMatchScoreboard } from '@clarkify/types/match';
+import { IMatchScoreboard } from '@clarkify/types';
 import { SortableTable, TableData } from 'sortable-table';
 import { ColumnDefinition } from 'sortable-table';
 

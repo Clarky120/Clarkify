@@ -1,4 +1,4 @@
-import { IMatch } from "@clarkify/types/match";
+import { IMatch } from "@clarkify/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getAdmin } from "./firebase";

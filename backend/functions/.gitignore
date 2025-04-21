@@ -1,4 +1,5 @@
 # Compiled JavaScript files
+dist
 dist/**/*.js
 dist/**/*.js.map
 
@@ -8,3 +9,6 @@ typings/
 # Node.js dependency directory
 node_modules/
 *.local
+
+firebase-export*
+firebase-export/**

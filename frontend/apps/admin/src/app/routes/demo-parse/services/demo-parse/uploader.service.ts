@@ -8,10 +8,7 @@ import {
 } from '@angular/fire/storage';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { NetworkService } from '../../../../services/network.service';
-import {
-  ICreateTaskRequest,
-  ICreateTaskResponse,
-} from '@clarkify/types/server-requests/admin/demo-parse';
+import { ICreateTaskRequest, ICreateTaskResponse } from '@clarkify/types';
 import { LoggerService } from '../../../../services/logger.service';
 
 @Injectable()

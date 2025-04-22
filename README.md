@@ -26,12 +26,12 @@ Add firebase service account key at backend/core/service-keys/dev.json or core/s
 
 Create .env file at backend/server/.env
 
-NODE_ENV=development
-LOG_LEVEL=debug
-FIREBASE_CREDENTIALS=../service-keys/dev.json
-FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
-FIREBASE_STORAGE_EMULATOR_HOST=127.0.0.1:9199
+    NODE_ENV=development
+    LOG_LEVEL=debug
+    FIREBASE_CREDENTIALS=../service-keys/dev.json
+    FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
+    FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
+    FIREBASE_STORAGE_EMULATOR_HOST=127.0.0.1:9199
 
 Create environment.ts & environment.prod.ts in frontend/apps/admin/src/environments
 

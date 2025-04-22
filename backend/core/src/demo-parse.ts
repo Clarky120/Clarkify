@@ -81,7 +81,7 @@ export class DemoParseTask {
   /**
    * Use DemoParseTask.create() instead
    */
-  private constructor() {}
+  private constructor() { }
 
   /**
    * Returns the task
@@ -416,6 +416,7 @@ export class DemoParseTask {
         weapon: damage.weapon,
         hitGroup: damage.hitgroup,
         newHealth: damage.health,
+        actualDamage: this.calcActualDamage(dmgTimeline, damage),
       });
     }
 
@@ -549,12 +550,12 @@ export class DemoParseTask {
     for (const event of timeline) {
       switch (event.type) {
         case "damage": {
-          // const damageEvent = event as IMatchTimelineDamage;
-          // const scoreEntry = aggregate.get(damageEvent.attackerId);
-          // if (scoreEntry) {
-          //   scoreEntry.totalDamage +=
-          //     damageEvent.damageHealth + damageEvent.damageArmor;
-          // }
+          const damageEvent = event as IMatchTimelineDamage;
+          const scoreEntry = aggregate.get(damageEvent.attackerId);
+          if (scoreEntry) {
+            scoreEntry.totalDamage +=
+              damageEvent.actualDamage;
+          }
           break;
         }
 
@@ -603,11 +604,42 @@ export class DemoParseTask {
           aggregateEntry.kills === 0
             ? 0
             : Number(
-                (aggregateEntry.headshots / aggregateEntry.kills).toFixed(2)
-              ),
+              (aggregateEntry.headshots / aggregateEntry.kills).toFixed(2)
+            ),
       });
     }
 
     return Object.fromEntries(scoreboard);
+  }
+
+  calcActualDamage(
+    timeline: IMatchTimelineDamage[],
+    hurtEvent: IPlayerHurtEvent
+  ) {
+    const sortedTimeline = timeline
+      .filter(
+        (f) =>
+          f.victimId === hurtEvent.user_steamid &&
+          f.tick < hurtEvent.tick &&
+          f.roundIndex === hurtEvent.total_rounds_played
+      )
+      .sort((a, b) => b.tick - a.tick);
+
+    if (sortedTimeline.length === 0) {
+      return Math.min(hurtEvent.dmg_health, 100);
+    }
+
+    for (const tick of sortedTimeline) {
+      const prevHealth = tick.newHealth;
+      //They ded
+      if (prevHealth - hurtEvent.dmg_health < 0) {
+        return prevHealth;
+      } else {
+        //They not
+        return hurtEvent.dmg_health;
+      }
+    }
+    //Keeps compiler happy
+    return 100;
   }
 }

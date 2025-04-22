@@ -45,6 +45,7 @@ export interface IMatchTimelineDamage extends IMatchTimeline {
   weapon: string;
   hitGroup: string;
   newHealth: number;
+  actualDamage: number;
 }
 
 export interface IMatchTimelineDeath extends IMatchTimeline {

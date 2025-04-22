@@ -30,7 +30,7 @@ Create .env file at backend/server/.env
     NODE_ENV=development
     LOG_LEVEL=debug
 
-Create environment.ts & environment.prod.ts in frontend/admin/src/environments
+Create environment.ts & environment.prod.ts in frontend/apps/admin/src/environments
 
     export const environment = {
     	production: false,
@@ -59,7 +59,7 @@ Individual
 
     sh emu.sh
     sh server.sh
-    cd admin && ng serve --host 0.0.0.0
+    cd frontend && ng serve --host 0.0.0.0
 
 Using zellij
 

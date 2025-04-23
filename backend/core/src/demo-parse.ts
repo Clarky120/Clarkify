@@ -417,6 +417,7 @@ export class DemoParseTask {
         hitGroup: damage.hitgroup,
         newHealth: damage.health,
         actualDamage: this.calcActualDamage(dmgTimeline, damage),
+        isGrenadeDamage: damage.weapon === "hegrenade" || damage.weapon === "molotov" || damage.weapon === "inferno"
       });
     }
 
@@ -533,6 +534,7 @@ export class DemoParseTask {
         assists: 0;
         totalDamage: 0;
         headshots: 0;
+        grenadeDamage: 0;
       }
     >();
     for (const player of Object.values(players)) {
@@ -543,6 +545,7 @@ export class DemoParseTask {
         assists: 0,
         totalDamage: 0,
         headshots: 0,
+        grenadeDamage: 0
       });
     }
 
@@ -553,8 +556,11 @@ export class DemoParseTask {
           const damageEvent = event as IMatchTimelineDamage;
           const scoreEntry = aggregate.get(damageEvent.attackerId);
           if (scoreEntry) {
-            scoreEntry.totalDamage +=
-              damageEvent.actualDamage;
+            scoreEntry.totalDamage += damageEvent.actualDamage;
+
+            if (damageEvent.isGrenadeDamage) {
+              scoreEntry.grenadeDamage += damageEvent.actualDamage
+            }
           }
           break;
         }
@@ -606,10 +612,57 @@ export class DemoParseTask {
             : Number(
               (aggregateEntry.headshots / aggregateEntry.kills).toFixed(2)
             ),
+        ...this.generateMultiKillRounds(timeline, steamid),
+        grenadeDamage: aggregateEntry.grenadeDamage
       });
     }
 
     return Object.fromEntries(scoreboard);
+  }
+
+  generateMultiKillRounds(ticks: IMatchTimeline[], steamid: string) {
+    let killTicks = (
+      ticks.filter((t) => t.type === "death") as IMatchTimelineDeath[]
+    )
+      .filter((t) => t.attackerId === steamid)
+      .sort((a, b) => {
+        console.log(b);
+        return a.roundIndex - b.roundIndex
+      });
+
+    let maxRound = killTicks[killTicks.length - 1].roundIndex;
+
+    let multiKill = {
+      twoKillRounds: 0,
+      threeKillRounds: 0,
+      fourKillRounds: 0,
+      fiveKillRounds: 0,
+    };
+
+    for (let round = 0; round < maxRound + 1; round++) {
+      console.log(killTicks);
+      let killsThisRound = killTicks.filter((k) => k.roundIndex === round);
+
+      switch (killsThisRound.length) {
+        case 2:
+          multiKill.twoKillRounds++;
+          break;
+        case 3:
+          multiKill.threeKillRounds++;
+          break;
+        case 4:
+          multiKill.fourKillRounds++;
+          break;
+        case 5:
+          multiKill.fiveKillRounds++;
+          break;
+        default:
+          //Only 0 or 1 kill so they are a noob
+          break;
+      }
+    }
+
+    return multiKill;
   }
 
   calcActualDamage(

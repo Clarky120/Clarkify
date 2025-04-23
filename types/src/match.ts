@@ -46,6 +46,7 @@ export interface IMatchTimelineDamage extends IMatchTimeline {
   hitGroup: string;
   newHealth: number;
   actualDamage: number;
+  isGrenadeDamage: boolean;
 }
 
 export interface IMatchTimelineDeath extends IMatchTimeline {
@@ -80,4 +81,9 @@ export interface IMatchScoreboard {
   assists: number;
   adr: number;
   headshotPercentage: number;
+  twoKillRounds: number;
+  threeKillRounds: number;
+  fourKillRounds: number;
+  fiveKillRounds: number;
+  grenadeDamage: number;
 }

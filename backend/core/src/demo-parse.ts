@@ -679,7 +679,7 @@ export class DemoParseTask {
  * @param hurtEvent The hurt event tick we need to check
  * @returns The actual damage as a number
  */
-  calcActualDamage(
+  private calcActualDamage(
     timeline: IMatchTimelineDamage[],
     hurtEvent: IPlayerHurtEvent
   ) {
@@ -720,7 +720,7 @@ export class DemoParseTask {
 * @param maxRounds Match rounds
 * @returns HLTV Rating
 */
-  calcHLTVRating(ticks: IMatchTimeline[], steamid: string, kills: number, assists: number, deaths: number, adr: number, maxRounds: number) {
+  private calcHLTVRating(ticks: IMatchTimeline[], steamid: string, kills: number, assists: number, deaths: number, adr: number, maxRounds: number) {
     //Kill, assist, survived or traded.
     let KAST = 0;
 
@@ -752,11 +752,12 @@ export class DemoParseTask {
     return ((0.0073 * KASTPerRound) + (0.3591 * KPR) + (-0.5329 * DPR) + (0.2372 * impactRating) + (0.0032 * adr) + 0.1587).toFixed(2)
   }
 
-  isTradedKillCheck(kills: IMatchTimelineDeath[], steamid: string) {
+  private isTradedKillCheck(kills: IMatchTimelineDeath[], steamid: string) {
     const death = kills.find((k) => k.victimId === steamid);
     const trade = kills.find((d) => d.victimId === death?.attackerId);
 
     if (trade && death) {
+      //Trade kill within 3 seconds
       if (trade.gameTime - death?.gameTime < 3) {
         return true;
       }

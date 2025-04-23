@@ -417,6 +417,7 @@ export class DemoParseTask {
         hitGroup: damage.hitgroup,
         newHealth: damage.health,
         actualDamage: this.calcActualDamage(dmgTimeline, damage),
+        isGrenadeDamage: damage.weapon === "hegrenade" || damage.weapon === "molotov" || damage.weapon === "inferno"
       });
     }
 
@@ -425,7 +426,7 @@ export class DemoParseTask {
     const allDeaths = parseEvent(
       this._filePath,
       "player_death",
-      ["team_num", "X", "Y", "Z"],
+      ["team_num", "X", "Y", "Z", "game_time"],
       ["total_rounds_played", "is_warmup_period"]
     ) as (IPlayerDeathEvent & {
       user_team_num: number;
@@ -438,6 +439,7 @@ export class DemoParseTask {
       user_X: number;
       user_Y: number;
       user_Z: number;
+      game_time: number;
     })[];
 
     for (const death of allDeaths) {
@@ -505,6 +507,7 @@ export class DemoParseTask {
         penetrated: death.penetrated,
         noscope: death.noscope,
         thrusmoke: death.thrusmoke,
+        gameTime: death.game_time
       });
     }
 
@@ -533,6 +536,7 @@ export class DemoParseTask {
         assists: 0;
         totalDamage: 0;
         headshots: 0;
+        grenadeDamage: 0;
       }
     >();
     for (const player of Object.values(players)) {
@@ -543,6 +547,7 @@ export class DemoParseTask {
         assists: 0,
         totalDamage: 0,
         headshots: 0,
+        grenadeDamage: 0
       });
     }
 
@@ -553,8 +558,11 @@ export class DemoParseTask {
           const damageEvent = event as IMatchTimelineDamage;
           const scoreEntry = aggregate.get(damageEvent.attackerId);
           if (scoreEntry) {
-            scoreEntry.totalDamage +=
-              damageEvent.actualDamage;
+            scoreEntry.totalDamage += damageEvent.actualDamage;
+
+            if (damageEvent.isGrenadeDamage) {
+              scoreEntry.grenadeDamage += damageEvent.actualDamage
+            }
           }
           break;
         }
@@ -606,13 +614,72 @@ export class DemoParseTask {
             : Number(
               (aggregateEntry.headshots / aggregateEntry.kills).toFixed(2)
             ),
+        ...this.generateMultiKillRounds(timeline, steamid),
+        grenadeDamage: aggregateEntry.grenadeDamage,
+        hltvRating: Number(this.calcHLTVRating(timeline, steamid, aggregateEntry.kills, aggregateEntry.assists,
+          aggregateEntry.deaths, Math.floor(aggregateEntry.totalDamage / metadata.amtRounds), metadata.amtRounds))
       });
     }
 
     return Object.fromEntries(scoreboard);
   }
 
-  calcActualDamage(
+  /**
+* Generates object containing multi kill round info
+* @param ticks The match timeline containing damage and death events
+* @param steamid The attackers steamid
+* @returns Multi kill info object
+*/
+  generateMultiKillRounds(ticks: IMatchTimeline[], steamid: string) {
+    let killTicks = (
+      ticks.filter((t) => t.type === "death") as IMatchTimelineDeath[]
+    )
+      .filter((t) => t.attackerId === steamid)
+      .sort((a, b) => {
+        return a.roundIndex - b.roundIndex
+      });
+
+    let maxRound = killTicks[killTicks.length - 1].roundIndex;
+
+    let multiKill = {
+      twoKillRounds: 0,
+      threeKillRounds: 0,
+      fourKillRounds: 0,
+      fiveKillRounds: 0,
+    };
+
+    for (let round = 0; round < maxRound + 1; round++) {
+      let killsThisRound = killTicks.filter((k) => k.roundIndex === round);
+
+      switch (killsThisRound.length) {
+        case 2:
+          multiKill.twoKillRounds++;
+          break;
+        case 3:
+          multiKill.threeKillRounds++;
+          break;
+        case 4:
+          multiKill.fourKillRounds++;
+          break;
+        case 5:
+          multiKill.fiveKillRounds++;
+          break;
+        default:
+          //Only 0 or 1 kill so they are a noob
+          break;
+      }
+    }
+
+    return multiKill;
+  }
+
+  /**
+ * Calculates the actual damage the attacker has dealt
+ * @param timeline The match timeline containing damage events
+ * @param hurtEvent The hurt event tick we need to check
+ * @returns The actual damage as a number
+ */
+  private calcActualDamage(
     timeline: IMatchTimelineDamage[],
     hurtEvent: IPlayerHurtEvent
   ) {
@@ -641,5 +708,61 @@ export class DemoParseTask {
     }
     //Keeps compiler happy
     return 100;
+  }
+
+  /**
+* Calculates HLTV Rating for player
+* @param ticks The match timeline containing damage and kill events
+* @param steamid SteamID of player
+* @param kills Total kills
+* @param assists Total Assists
+* @param adr Total ADR
+* @param maxRounds Match rounds
+* @returns HLTV Rating
+*/
+  private calcHLTVRating(ticks: IMatchTimeline[], steamid: string, kills: number, assists: number, deaths: number, adr: number, maxRounds: number) {
+    //Kill, assist, survived or traded.
+    let KAST = 0;
+
+    let killTicks = (
+      ticks.filter((t) => t.type === "death") as IMatchTimelineDeath[]
+    )
+
+    for (let round = 0; round < maxRounds; round++) {
+      let kill = killTicks.find((k) => k.roundIndex === round && k.attackerId === steamid);
+      let assist = killTicks.find((k) => k.roundIndex === round && k.assisterId === steamid);
+      let survived = !killTicks.find((k) => k.roundIndex === round && k.victimId === steamid);
+
+      if (kill || assist || survived) {
+        KAST++;
+      } else {
+        //Check if death was traded
+        if (this.isTradedKillCheck(killTicks.filter((k) => k.roundIndex === round), steamid)) {
+          KAST++
+        }
+      }
+    }
+
+    let KASTPerRound = (100 / maxRounds) * KAST;
+    let KPR = kills / maxRounds;
+    let APR = assists / maxRounds;
+    let DPR = deaths / maxRounds;
+    let impactRating = ((2.13 * KPR) + (0.42 * APR)) - 0.41
+
+    return ((0.0073 * KASTPerRound) + (0.3591 * KPR) + (-0.5329 * DPR) + (0.2372 * impactRating) + (0.0032 * adr) + 0.1587).toFixed(2)
+  }
+
+  private isTradedKillCheck(kills: IMatchTimelineDeath[], steamid: string) {
+    const death = kills.find((k) => k.victimId === steamid);
+    const trade = kills.find((d) => d.victimId === death?.attackerId);
+
+    if (trade && death) {
+      //Trade kill within 3 seconds
+      if (trade.gameTime - death?.gameTime < 3) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

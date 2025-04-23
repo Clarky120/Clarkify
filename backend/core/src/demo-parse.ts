@@ -620,6 +620,12 @@ export class DemoParseTask {
     return Object.fromEntries(scoreboard);
   }
 
+  /**
+* Generates object containing multi kill round info
+* @param ticks The match timeline containing damage and death events
+* @param steamid The attackers steamid
+* @returns Multi kill info object
+*/
   generateMultiKillRounds(ticks: IMatchTimeline[], steamid: string) {
     let killTicks = (
       ticks.filter((t) => t.type === "death") as IMatchTimelineDeath[]
@@ -665,6 +671,12 @@ export class DemoParseTask {
     return multiKill;
   }
 
+  /**
+ * Calculates the actual damage the attacker has dealt
+ * @param timeline The match timeline containing damage events
+ * @param hurtEvent The hurt event tick we need to check
+ * @returns The actual damage as a number
+ */
   calcActualDamage(
     timeline: IMatchTimelineDamage[],
     hurtEvent: IPlayerHurtEvent

@@ -70,6 +70,7 @@ export interface IMatchTimelineDeath extends IMatchTimeline {
   penetrated: number;
   noscope: boolean;
   thrusmoke: boolean;
+  gameTime: number;
 }
 
 export interface IMatchScoreboard {
@@ -86,4 +87,5 @@ export interface IMatchScoreboard {
   fourKillRounds: number;
   fiveKillRounds: number;
   grenadeDamage: number;
+  hltvRating: number;
 }

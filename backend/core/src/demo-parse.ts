@@ -426,7 +426,7 @@ export class DemoParseTask {
     const allDeaths = parseEvent(
       this._filePath,
       "player_death",
-      ["team_num", "X", "Y", "Z"],
+      ["team_num", "X", "Y", "Z", "game_time"],
       ["total_rounds_played", "is_warmup_period"]
     ) as (IPlayerDeathEvent & {
       user_team_num: number;
@@ -439,6 +439,7 @@ export class DemoParseTask {
       user_X: number;
       user_Y: number;
       user_Z: number;
+      game_time: number;
     })[];
 
     for (const death of allDeaths) {
@@ -506,6 +507,7 @@ export class DemoParseTask {
         penetrated: death.penetrated,
         noscope: death.noscope,
         thrusmoke: death.thrusmoke,
+        gameTime: death.game_time
       });
     }
 
@@ -613,7 +615,9 @@ export class DemoParseTask {
               (aggregateEntry.headshots / aggregateEntry.kills).toFixed(2)
             ),
         ...this.generateMultiKillRounds(timeline, steamid),
-        grenadeDamage: aggregateEntry.grenadeDamage
+        grenadeDamage: aggregateEntry.grenadeDamage,
+        hltvRating: Number(this.calcHLTVRating(timeline, steamid, aggregateEntry.kills, aggregateEntry.assists,
+          aggregateEntry.deaths, Math.floor(aggregateEntry.totalDamage / metadata.amtRounds), metadata.amtRounds))
       });
     }
 
@@ -632,7 +636,6 @@ export class DemoParseTask {
     )
       .filter((t) => t.attackerId === steamid)
       .sort((a, b) => {
-        console.log(b);
         return a.roundIndex - b.roundIndex
       });
 
@@ -646,7 +649,6 @@ export class DemoParseTask {
     };
 
     for (let round = 0; round < maxRound + 1; round++) {
-      console.log(killTicks);
       let killsThisRound = killTicks.filter((k) => k.roundIndex === round);
 
       switch (killsThisRound.length) {
@@ -706,5 +708,60 @@ export class DemoParseTask {
     }
     //Keeps compiler happy
     return 100;
+  }
+
+  /**
+* Calculates HLTV Rating for player
+* @param ticks The match timeline containing damage and kill events
+* @param steamid SteamID of player
+* @param kills Total kills
+* @param assists Total Assists
+* @param adr Total ADR
+* @param maxRounds Match rounds
+* @returns HLTV Rating
+*/
+  calcHLTVRating(ticks: IMatchTimeline[], steamid: string, kills: number, assists: number, deaths: number, adr: number, maxRounds: number) {
+    //Kill, assist, survived or traded.
+    let KAST = 0;
+
+    let killTicks = (
+      ticks.filter((t) => t.type === "death") as IMatchTimelineDeath[]
+    )
+
+    for (let round = 0; round < maxRounds; round++) {
+      let kill = killTicks.find((k) => k.roundIndex === round && k.attackerId === steamid);
+      let assist = killTicks.find((k) => k.roundIndex === round && k.assisterId === steamid);
+      let survived = !killTicks.find((k) => k.roundIndex === round && k.victimId === steamid);
+
+      if (kill || assist || survived) {
+        KAST++;
+      } else {
+        //Check if death was traded
+        if (this.isTradedKillCheck(killTicks.filter((k) => k.roundIndex === round), steamid)) {
+          KAST++
+        }
+      }
+    }
+
+    let KASTPerRound = (100 / maxRounds) * KAST;
+    let KPR = kills / maxRounds;
+    let APR = assists / maxRounds;
+    let DPR = deaths / maxRounds;
+    let impactRating = ((2.13 * KPR) + (0.42 * APR)) - 0.41
+
+    return ((0.0073 * KASTPerRound) + (0.3591 * KPR) + (-0.5329 * DPR) + (0.2372 * impactRating) + (0.0032 * adr) + 0.1587).toFixed(2)
+  }
+
+  isTradedKillCheck(kills: IMatchTimelineDeath[], steamid: string) {
+    const death = kills.find((k) => k.victimId === steamid);
+    const trade = kills.find((d) => d.victimId === death?.attackerId);
+
+    if (trade && death) {
+      if (trade.gameTime - death?.gameTime < 3) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
